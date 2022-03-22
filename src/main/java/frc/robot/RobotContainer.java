@@ -44,7 +44,7 @@ public class RobotContainer {
    */
   public RobotContainer() {
     Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
-    compressor.disable();
+    //compressor.disable();
     DoubleSolenoid gearShiftSolenoid = new DoubleSolenoid (PneumaticsModuleType.CTREPCM, 0, 1);
 
     Spark r0 = new Spark(0);
