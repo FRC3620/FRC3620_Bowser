@@ -36,7 +36,7 @@ public class RobotContainer {
 
   private final DriveCommand m_autoCommand = null;
 
-  Joystick m_driverController = new Joystick(0);
+  static public Joystick m_driverController = new Joystick(0);
 
 
   /**

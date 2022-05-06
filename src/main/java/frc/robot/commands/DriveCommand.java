@@ -42,7 +42,8 @@ public class DriveCommand extends CommandBase {
   @Override
   public void execute() {
     double speed = m_joystick.getRawAxis (XBoxConstants.AXIS_LEFT_Y);
-    double turn = m_joystick.getRawAxis (XBoxConstants.AXIS_RIGHT_X);
+    //double turn = m_joystick.getRawAxis (XBoxConstants.AXIS_RIGHT_X);
+    double turn = m_joystick.getRawAxis (3);
     m_subsystem.driveRobot(speed, sj(turn));
   }
 

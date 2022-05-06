@@ -16,8 +16,10 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
+import frc.robot.RobotContainer;
 
 public class DriveSubsystem extends SubsystemBase {
   Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
@@ -71,6 +73,11 @@ public class DriveSubsystem extends SubsystemBase {
         gearshiftSolenoid.set(Value.kOff);
         gearshiftTimerIsActive = false;
       }
+    }
+
+    for (int axis = 0; axis <= RobotContainer.m_driverController.getAxisCount(); axis++) {
+      double v = RobotContainer.m_driverController.getRawAxis(axis);
+      SmartDashboard.putNumber("axis_" + axis, v);
     }
   }
 
