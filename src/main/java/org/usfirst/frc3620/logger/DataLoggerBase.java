@@ -54,9 +54,18 @@ abstract public class DataLoggerBase implements IDataLogger {
 	}
 
 	@Override
-	public void addMetadata(String s, Object o) {
+	public void addMetadata(String s, double d) {
 		if (!started) {
-			metadata.put(s, o);
+			metadata.put(s, d);
+		} else {
+			logger.error("Cannot addMetadata(...) after start()");
+		}
+	}
+
+	@Override
+	public void addMetadata(String s, String v) {
+		if (!started) {
+			metadata.put(s, v);
 		} else {
 			logger.error("Cannot addMetadata(...) after start()");
 		}
@@ -118,7 +127,7 @@ abstract public class DataLoggerBase implements IDataLogger {
 
 	static void writeHeader(PrintWriter w, Iterable<NamedDataProvider> namedDataProviders,
 			Map<String, Object> metadata) {
-		w.print("time,timeSinceStart");
+		w.print("meta,time,timeSinceStart");
 		for (NamedDataProvider namedDataProvider : namedDataProviders) {
 			w.print(",");
 			w.print(namedDataProvider.name);

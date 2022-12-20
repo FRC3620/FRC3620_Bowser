@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -74,9 +75,9 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     new JoystickButton(m_driverController, Button.kA.value)
-      .whenPressed(() -> m_driveSubsystem.shiftToLowGear());
+      .onTrue(new InstantCommand(() -> m_driveSubsystem.shiftToLowGear()));
     new JoystickButton(m_driverController, Button.kB.value)
-      .whenPressed(() -> m_driveSubsystem.shiftToHighGear());
+      .onTrue(new InstantCommand(() -> m_driveSubsystem.shiftToHighGear()));
   }
 
 

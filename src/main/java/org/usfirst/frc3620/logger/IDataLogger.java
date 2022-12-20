@@ -17,7 +17,9 @@ public interface IDataLogger {
     public void addDataProvider(String name, 
             IDataLoggerDataProvider iDataLoggerDataProvider);
 
-    public void addMetadata(String s, Object o);
+    public void addMetadata(String s, double d);
+
+    public void addMetadata(String s, String v);
 
     public String start();
 

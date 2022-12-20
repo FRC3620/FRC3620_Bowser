@@ -25,7 +25,7 @@ public class LoggingMaster {
                         _timestamp = new Date();
                         String logMessage = String.format(
                                 "timestamp for logs is %s\n",convertTimestampToString(_timestamp));
-                        EventLogging.writeWarningToDS(logMessage);
+                        System.out.println(logMessage);
                     }
                 }
             }
@@ -48,22 +48,24 @@ public class LoggingMaster {
             synchronized (LoggingMaster.class) {
                 if (_logDirectory == null) {
                     // Set dataLogger and Time information
-                    TimeZone.setDefault(
-                            TimeZone.getTimeZone("America/Detroit"));
-
-                    if (_logDirectory == null)
-                        _logDirectory = searchForLogDirectory(new File("/u"));
-                    if (_logDirectory == null)
-                        _logDirectory = searchForLogDirectory(new File("/v"));
-                    if (_logDirectory == null)
-                        _logDirectory = searchForLogDirectory(new File("/x"));
-                    if (_logDirectory == null)
-                        _logDirectory = searchForLogDirectory(new File("/y"));
-                    if (_logDirectory == null) {
-                        _logDirectory = new File(defaultLogLocation);
-                        if (!_logDirectory.exists()) {
-                            _logDirectory.mkdir();
+                    TimeZone.setDefault(TimeZone.getTimeZone("America/Detroit"));
+                    if (!System.getProperty("os.arch").equals("arm")) {
+                        _logDirectory = new File("./logs");
+                    } else {
+                        if (_logDirectory == null)
+                            _logDirectory = searchForLogDirectory(new File("/u"));
+                        if (_logDirectory == null)
+                            _logDirectory = searchForLogDirectory(new File("/v"));
+                        if (_logDirectory == null)
+                            _logDirectory = searchForLogDirectory(new File("/x"));
+                        if (_logDirectory == null)
+                            _logDirectory = searchForLogDirectory(new File("/y"));
+                        if (_logDirectory == null) {
+                            _logDirectory = new File(defaultLogLocation);
                         }
+                    }
+                    if (!_logDirectory.exists()) {
+                        _logDirectory.mkdir();
                     }
                     String logMessage = String.format("Log directory is %s\n",
                             _logDirectory);

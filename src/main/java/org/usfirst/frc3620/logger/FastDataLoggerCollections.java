@@ -2,7 +2,6 @@ package org.usfirst.frc3620.logger;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.IllegalFormatConversionException;
 import java.util.List;
 
 public class FastDataLoggerCollections extends FastDataLoggerBase {
@@ -27,6 +26,7 @@ public class FastDataLoggerCollections extends FastDataLoggerBase {
     @Override
     void writeData(PrintWriter w) {
         for (int i = 0; i < data.size(); i++) {
+            w.print(",");  // meta column comes first
             w.print(timestamps.get(i));
             w.print(",");            
             w.format("%.6f", timestamps.get(i));
@@ -35,11 +35,7 @@ public class FastDataLoggerCollections extends FastDataLoggerBase {
                 w.print(",");
                 Object o = row[c];
                 if (o instanceof Number) {
-                    if (o instanceof Integer) {
-                        w.format("%d", o);
-                    } else {
-                        w.format("%.6f", o);
-                    }
+                    w.format("%.6f", o);
                 } else {
                     w.print(o);
                 }

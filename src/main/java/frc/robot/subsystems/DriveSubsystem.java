@@ -74,11 +74,6 @@ public class DriveSubsystem extends SubsystemBase {
         gearshiftTimerIsActive = false;
       }
     }
-
-    for (int axis = 0; axis <= RobotContainer.m_driverController.getAxisCount(); axis++) {
-      double v = RobotContainer.m_driverController.getRawAxis(axis);
-      SmartDashboard.putNumber("axis_" + axis, v);
-    }
   }
 
   public void shiftToHighGear() {
