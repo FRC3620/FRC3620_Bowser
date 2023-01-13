@@ -39,6 +39,9 @@ public class DriveSubsystem extends SubsystemBase {
   DoubleSolenoid gearshiftSolenoid;
   Timer gearshiftTimer = new Timer();
   boolean gearshiftTimerIsActive = false;
+  double yaw;
+  double pitch;
+  double roll;
 
   /**
    * Creates a new ExampleSubsystem
@@ -82,13 +85,21 @@ public class DriveSubsystem extends SubsystemBase {
       }
     }
 
+    yaw = ahrs.getYaw();
+    pitch = ahrs.getPitch();
+    roll = ahrs.getRoll();
+
     SmartDashboard.putBoolean("IMU_Connected", ahrs.isConnected());
     SmartDashboard.putBoolean("IMU_IsCalibrating", ahrs.isCalibrating());
-    SmartDashboard.putNumber("IMU_Yaw", ahrs.getYaw());
-    SmartDashboard.putNumber("IMU_Pitch", ahrs.getPitch());
-    SmartDashboard.putNumber("IMU_Roll", ahrs.getRoll());
+    SmartDashboard.putNumber("IMU_Yaw", yaw);
+    SmartDashboard.putNumber("IMU_Pitch", pitch);
+    SmartDashboard.putNumber("IMU_Roll", roll);
 
 
+    }
+
+    public double getRoll() {
+      return roll;
     }
 
   public void shiftToHighGear() {
