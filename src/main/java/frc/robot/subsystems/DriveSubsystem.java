@@ -20,8 +20,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
+import edu.wpi.first.wpilibj.SPI;
+
+
+import com.kauailabs.navx.frc.*;
 
 public class DriveSubsystem extends SubsystemBase {
+  AHRS ahrs;
   Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
   enum WhichGear {
@@ -43,6 +48,8 @@ public class DriveSubsystem extends SubsystemBase {
     gearshiftSolenoid = _gearShiftSolenoid;
     currentGear = WhichGear.UNKNOWN;
     desiredGear = WhichGear.LOW;
+
+    ahrs = new AHRS(SPI.Port.kMXP);
   }
 
   @Override
@@ -74,7 +81,15 @@ public class DriveSubsystem extends SubsystemBase {
         gearshiftTimerIsActive = false;
       }
     }
-  }
+
+    SmartDashboard.putBoolean("IMU_Connected", ahrs.isConnected());
+    SmartDashboard.putBoolean("IMU_IsCalibrating", ahrs.isCalibrating());
+    SmartDashboard.putNumber("IMU_Yaw", ahrs.getYaw());
+    SmartDashboard.putNumber("IMU_Pitch", ahrs.getPitch());
+    SmartDashboard.putNumber("IMU_Roll", ahrs.getRoll());
+
+
+    }
 
   public void shiftToHighGear() {
     desiredGear = WhichGear.HIGH;
