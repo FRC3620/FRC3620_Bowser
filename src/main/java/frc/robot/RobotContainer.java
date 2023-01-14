@@ -7,17 +7,22 @@
 
 package frc.robot;
 
+import org.usfirst.frc3620.misc.XBoxConstants;
+
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.autoLevelingCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -69,8 +74,9 @@ public class RobotContainer {
 
     // Configure the button bindings
     configureButtonBindings();
+    setupSmartDashboardCommands();    
   }
-
+  
   /**
    * Use this method to define your button->command mappings.  Buttons can be created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
@@ -82,9 +88,14 @@ public class RobotContainer {
       .onTrue(new InstantCommand(() -> m_driveSubsystem.shiftToLowGear()));
     new JoystickButton(m_driverController, Button.kB.value)
       .onTrue(new InstantCommand(() -> m_driveSubsystem.shiftToHighGear()));
+    JoystickButton autoLevel = new JoystickButton(m_driverController, XBoxConstants.BUTTON_LEFT_BUMPER);
+      autoLevel.onTrue(new autoLevelingCommand(m_driveSubsystem));
   }
 
-
+  void setupSmartDashboardCommands() {
+    SmartDashboard.putData("Start Auto Level", new autoLevelingCommand(m_driveSubsystem));
+  }
+ 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
