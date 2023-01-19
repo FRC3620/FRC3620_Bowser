@@ -5,9 +5,11 @@
 package frc.robot.commands;
 
 import java.lang.System.Logger.Level;
+import java.sql.Time;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -20,7 +22,7 @@ public class autoLevelingCommand extends CommandBase {
   double roll;
 
   enum MyState {
-    LEVEL, TILTED, LEVEL2, DONE
+    LEVEL, TILTED, COUNTER, DONE
   } 
   
   MyState myState;
@@ -48,21 +50,25 @@ public class autoLevelingCommand extends CommandBase {
 
     if(myState == MyState.LEVEL){
       //drive
-      driveSubsystem.driveRobot(-.8, 0);
+      driveSubsystem.driveRobot(-1.0, 0);
       if(roll > 10) {
         myState = MyState.TILTED;
       }
     } else if(myState == MyState.TILTED){
       //drive
-      driveSubsystem.driveRobot(-.8, 0);
+      driveSubsystem.driveRobot(-.5, 0);
      if(roll < 10 && roll > -1){
-       myState = MyState.LEVEL2;
+       myState = MyState.COUNTER;
       }
     }
-    if(myState == MyState.LEVEL2){
-      //stop
-      driveSubsystem.stop();
-      myState = MyState.DONE;
+
+    if(myState == MyState.COUNTER){
+      if(roll > -10 && roll < 1){
+        driveSubsystem.driveRobot(0.7, 0);
+      } else {
+        driveSubsystem.stop();
+        myState = MyState.DONE;
+      }
     }
 
     SmartDashboard.putString("myState", myState.toString());
@@ -72,17 +78,17 @@ public class autoLevelingCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     SmartDashboard.putBoolean("AutoLevel Running", false);
+    myState = MyState.LEVEL;
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    boolean result = false;
     
     if(myState == MyState.DONE){
-      result = true;
+      return true;
     }
 
-    return result;
+    return false;
   }
 }
