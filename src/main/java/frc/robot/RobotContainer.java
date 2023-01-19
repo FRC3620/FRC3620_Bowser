@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.autoLevelingCommand;
+import frc.robot.commands.stayLevelCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -90,6 +91,8 @@ public class RobotContainer {
       .onTrue(new InstantCommand(() -> m_driveSubsystem.shiftToHighGear()));
     JoystickButton autoLevel = new JoystickButton(m_driverController, XBoxConstants.BUTTON_LEFT_BUMPER);
       autoLevel.onTrue(new autoLevelingCommand(m_driveSubsystem));
+    JoystickButton stayLevel = new JoystickButton(m_driverController, XBoxConstants.BUTTON_RIGHT_BUMPER);
+      stayLevel.whileTrue(new stayLevelCommand(m_driveSubsystem));
   }
 
   void setupSmartDashboardCommands() {
