@@ -8,17 +8,20 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.PitchAndRollSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -33,7 +36,10 @@ public class RobotContainer {
 
   
   // The robot's subsystems and commands are defined here...
+  MotorControllerGroup l, r;
   private final DriveSubsystem m_driveSubsystem;
+
+  public static PitchAndRollSubsystem pitchAndRollSubsystem;
 
   private final DriveCommand m_autoCommand = null;
 
@@ -50,16 +56,17 @@ public class RobotContainer {
 
     Spark r0 = new Spark(0);
     Spark r1 = new Spark(1);
-    MotorControllerGroup r = new MotorControllerGroup(r0, r1);
+    r = new MotorControllerGroup(r0, r1);
     r.setInverted(true);
     Spark l0 = new Spark(2);
     Spark l1 = new Spark(3);
-    MotorControllerGroup l = new MotorControllerGroup(l0, l1);
+    l = new MotorControllerGroup(l0, l1);
     DifferentialDrive drive = new DifferentialDrive(l, r);
 
     m_driveSubsystem = new DriveSubsystem(drive, gearShiftSolenoid);
     //gearShiftSolenoid.setSubsystem("foo");
     //drive.setSubsystem("foo");
+    pitchAndRollSubsystem = new PitchAndRollSubsystem();
 
     m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem, m_driverController));
 
@@ -89,5 +96,10 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     return m_autoCommand;
+  }
+
+  public void periodic() {
+    SmartDashboard.putNumber("drive.left.power", l.get());
+    SmartDashboard.putNumber("drive.right.power", r.get());
   }
 }

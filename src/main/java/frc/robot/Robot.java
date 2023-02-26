@@ -14,6 +14,8 @@ import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.RobotMode;
 
+import edu.wpi.first.math.filter.LinearFilter;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -31,6 +33,8 @@ public class Robot extends TimedRobot {
 
   private Logger logger;
   static RobotMode currentRobotMode = RobotMode.INIT, previousRobotMode;
+
+  boolean weKnowWhatLevelIs = false;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -56,6 +60,10 @@ public class Robot extends TimedRobot {
         logger.info("Ended {}", command.getClass().getSimpleName());//I, too, scream at people
       }
     });
+
+    
+    DataLogManager.start();
+
   }
 
   /**
@@ -91,6 +99,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    RobotContainer.pitchAndRollSubsystem.stopBaselining();
     processRobotModeChange(RobotMode.AUTONOMOUS);
 
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
@@ -110,6 +119,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    RobotContainer.pitchAndRollSubsystem.stopBaselining();
     processRobotModeChange(RobotMode.TELEOP);
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to

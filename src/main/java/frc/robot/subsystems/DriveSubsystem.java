@@ -88,8 +88,7 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("IMU_Pitch", ahrs.getPitch());
     SmartDashboard.putNumber("IMU_Roll", ahrs.getRoll());
 
-
-    }
+  }
 
   public void shiftToHighGear() {
     desiredGear = WhichGear.HIGH;
